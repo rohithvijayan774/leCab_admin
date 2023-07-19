@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lecab_admin/provider/admin_bottom_navbar_provider.dart';
+import 'package:lecab_admin/provider/admin_details_provider.dart';
 import 'package:lecab_admin/provider/graph_provider.dart';
 import 'package:lecab_admin/provider/splash_screen_provider.dart';
 import 'package:lecab_admin/views/admin_splash_screen.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<SplashScreenProvider>(
           create: (context) => SplashScreenProvider(),
+        ),
+        ChangeNotifierProvider<AdminDetailsProvider>(
+          create: (context) => AdminDetailsProvider(),
         ),
       ],
       child: MaterialApp(

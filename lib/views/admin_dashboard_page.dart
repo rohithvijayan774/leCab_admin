@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lecab_admin/provider/admin_details_provider.dart';
 import 'package:lecab_admin/provider/graph_provider.dart';
-import 'package:lecab_admin/views/admin_login_page.dart';
+import 'package:lecab_admin/utils/example.dart';
 import 'package:lecab_admin/widgets/dash_board_card.dart';
 import 'package:lecab_admin/widgets/graph_color_note.dart';
 import 'package:lecab_admin/widgets/line_graph_widget.dart';
@@ -11,7 +12,11 @@ class AdminDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final adminDetailsPro =
+        Provider.of<AdminDetailsProvider>(context, listen: false);
     final graphProvider = Provider.of<GraphProvider>(context, listen: false);
+
+    adminDetailsPro.findUsersCount();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -28,11 +33,9 @@ class AdminDashboardPage extends StatelessWidget {
                 style: TextStyle(fontSize: 30, fontFamily: 'Poppins'),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (ctx1) => const AdminLoginPage()),
-                      (route) => false);
+                onPressed: () async {
+                  await adminDetailsPro.setSignOut();
+                  adminDetailsPro.adminLogout(context);
                 },
                 child: const Text(
                   'Logout',
@@ -54,8 +57,13 @@ class AdminDashboardPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 DashBoardCard(title: 'Total Rides', count: 0),
-                DashBoardCard(title: 'Drivers', count: 0),
-                DashBoardCard(title: 'Users', count: 0)
+                Consumer<AdminDetailsProvider>(builder: (context, value, _) {
+                  return DashBoardCard(
+                      title: 'Drivers', count: value.driversCount);
+                }),
+                Consumer<AdminDetailsProvider>(builder: (context, value, _) {
+                  return DashBoardCard(title: 'Users', count: value.usersCount);
+                }),
               ],
             ),
             const SizedBox(
@@ -89,6 +97,13 @@ class AdminDashboardPage extends StatelessWidget {
           ],
         ),
       ),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => const Example(),
+      //       ));
+      // }),
     );
   }
 }

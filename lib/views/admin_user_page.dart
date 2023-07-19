@@ -53,7 +53,7 @@ class AdminUserPage extends StatelessWidget {
       ),
       body: ListView.separated(
           itemBuilder: (context, index) => IDNameBar(
-                id: index + 1,
+                id: '${index + 1}',
                 name: users[index],
                 onPress: () {
                   Navigator.of(context).push(MaterialPageRoute(

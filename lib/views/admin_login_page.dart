@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:lecab_admin/widgets/admin_bottom_navbar.dart';
+import 'package:lecab_admin/provider/admin_details_provider.dart';
+import 'package:provider/provider.dart';
 
 class AdminLoginPage extends StatelessWidget {
   const AdminLoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final adminDetailsPro =
+        Provider.of<AdminDetailsProvider>(context, listen: false);
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -22,6 +25,7 @@ class AdminLoginPage extends StatelessWidget {
                   height: 20,
                 ),
                 TextFormField(
+                  controller: adminDetailsPro.userNameController,
                   decoration: const InputDecoration(
                       hintText: 'Username',
                       hintStyle: TextStyle(fontFamily: 'SofiaPro'),
@@ -31,10 +35,13 @@ class AdminLoginPage extends StatelessWidget {
                   height: 30,
                 ),
                 TextFormField(
+                  obscureText: true,
+                  controller: adminDetailsPro.passwordController,
                   decoration: const InputDecoration(
-                      hintText: 'Password',
-                      hintStyle: TextStyle(fontFamily: 'SofiaPro'),
-                      icon: Icon(Icons.security_outlined)),
+                    hintText: 'Password',
+                    hintStyle: TextStyle(fontFamily: 'SofiaPro'),
+                    icon: Icon(Icons.security_outlined),
+                  ),
                 ),
                 const SizedBox(
                   height: 40,
@@ -52,6 +59,8 @@ class AdminLoginPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () async {
+                        adminDetailsPro.checkAdminLogin(context);
+
                         // PermissionStatus locationPermission =
                         //     await Permission.location.request();
 
@@ -61,11 +70,11 @@ class AdminLoginPage extends StatelessWidget {
                         //   ));
                         // }
 
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const AdminBottomNavBar(),
-                          ),
-                        );
+                        // Navigator.of(context).push(
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const AdminBottomNavBar(),
+                        //   ),
+                        // );
                       },
                       child: const Text(
                         "Login",

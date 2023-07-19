@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class DriverDetails extends StatelessWidget {
-  int id;
-  String name;
-  DriverDetails({required this.id, required this.name, super.key});
+  final String id;
+  final String name;
+  const DriverDetails({required this.id, required this.name, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +34,9 @@ class DriverDetails extends StatelessWidget {
                     style: TextStyle(fontSize: 30, fontFamily: 'Poppins'),
                   ),
                   Text(
-                    "$id",
+                    id,
                     style:
-                        const TextStyle(fontSize: 30, fontFamily: 'SofiaPro'),
+                        const TextStyle(fontSize: 25, fontFamily: 'SofiaPro'),
                   ),
                   const SizedBox(
                     height: 10,
