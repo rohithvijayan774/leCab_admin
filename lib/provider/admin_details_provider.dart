@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lecab_admin/utils/drivers.dart';
+import 'package:lecab_admin/utils/users.dart';
 import 'package:lecab_admin/views/admin_login_page.dart';
 import 'package:lecab_admin/views/admin_splash_screen.dart';
 import 'package:lecab_admin/widgets/admin_bottom_navbar.dart';
@@ -26,6 +27,7 @@ class AdminDetailsProvider extends ChangeNotifier {
       );
     } else {
       fetchDrivers();
+      fetchUsers();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const AdminBottomNavBar(),
@@ -50,6 +52,7 @@ class AdminDetailsProvider extends ChangeNotifier {
       setSignIn();
       isSignedIn == true;
       fetchDrivers();
+      fetchUsers();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const AdminBottomNavBar(),
@@ -116,22 +119,68 @@ class AdminDetailsProvider extends ChangeNotifier {
         FirebaseFirestore.instance.collection('drivers');
     QuerySnapshot driverSnapshot = await driversRef.get();
 
-    driverSnapshot.docs.forEach((doc) {
+    for (var doc in driverSnapshot.docs) {
       String driverFirstName = doc['driverFirstName'];
       String driverLastName = doc['driverSurName'];
       String driverId = doc['driverid'];
+      String driverPhoneNumber = doc['driverPhoneNumber'];
+      String driverAddress = doc['driverAddress'];
+      String driverProfilePic = doc['driversProfilePic'];
+      String driverLicensePic = doc['driversLicensePic'];
+      String driverRCPic = doc['driversRegCertPic'];
+      String driverInsurancePic = doc['driversVehInsurancePic'];
 
       driver = Drivers(
-          firstName: driverFirstName, id: driverId, lastName: driverLastName);
+        firstName: driverFirstName,
+        id: driverId,
+        lastName: driverLastName,
+        address: driverAddress,
+        phoneNumber: driverPhoneNumber,
+        profilePicture: driverProfilePic,
+        licensePic: driverLicensePic,
+        rcPic: driverRCPic,
+        insurancePic: driverInsurancePic,
+      );
 
       driversList.add(driver!);
-    });
+    }
     print('Fetching Completed');
     notifyListeners();
   }
 
   clearDriversList() {
     driversList.clear();
+    notifyListeners();
+  }
+
+  //-----Get Users List
+  List<Users> usersList = [];
+  Users? user;
+
+  void fetchUsers() async {
+    print('Fetch Drivers Called');
+    usersList.clear();
+    CollectionReference usersRef =
+        FirebaseFirestore.instance.collection('users');
+    QuerySnapshot usersSnapshot = await usersRef.get();
+
+    for (var doc in usersSnapshot.docs) {
+      String userFirstName = doc['firstName'];
+      String userSurName = doc['surName'];
+      String userID = doc['uid'];
+      String userProfilePicture = doc['profilePicture'];
+      String userPhoneNumber = doc['phoneNumber'];
+
+      user = Users(
+        firstName: userFirstName,
+        surName: userSurName,
+        id: userID,
+        profilePicture: userProfilePicture,
+        phoneNumber: userPhoneNumber,
+      );
+      usersList.add(user!);
+    }
+    print('Users Fetching Completed');
     notifyListeners();
   }
 

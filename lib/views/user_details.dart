@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class UserDetails extends StatelessWidget {
-  int id;
-  String name;
-  UserDetails({required this.id, required this.name, super.key});
+  final String id;
+  final String firstName;
+  final String surName;
+  final String phoneNumber;
+  const UserDetails(
+      {required this.id,
+      required this.firstName,
+      required this.surName,
+      required this.phoneNumber,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,7 @@ class UserDetails extends StatelessWidget {
             top: 10,
           ),
           child: Text(
-            name,
+            firstName,
             style: const TextStyle(fontSize: 30, fontFamily: 'Poppins'),
           ),
         ),
@@ -35,32 +41,33 @@ class UserDetails extends StatelessWidget {
                     style: TextStyle(fontSize: 30, fontFamily: 'Poppins'),
                   ),
                   Text(
-                    "$id",
+                    id,
                     style:
-                        const TextStyle(fontSize: 30, fontFamily: 'SofiaPro'),
+                        const TextStyle(fontSize: 25, fontFamily: 'SofiaPro'),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   const Text(
                     'Name',
                     style: TextStyle(fontSize: 30, fontFamily: 'Poppins'),
                   ),
                   Text(
-                    name,
+                    '$firstName $surName',
                     style:
-                        const TextStyle(fontSize: 30, fontFamily: 'SofiaPro'),
+                        const TextStyle(fontSize: 25, fontFamily: 'SofiaPro'),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   const Text(
                     'Phone',
                     style: TextStyle(fontSize: 30, fontFamily: 'Poppins'),
                   ),
-                  const Text(
-                    'XXXXXXXXX',
-                    style: TextStyle(fontSize: 30, fontFamily: 'SofiaPro'),
+                  Text(
+                    phoneNumber,
+                    style:
+                        const TextStyle(fontSize: 25, fontFamily: 'SofiaPro'),
                   ),
                 ],
               ),

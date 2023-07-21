@@ -12,15 +12,7 @@ class AdminDriverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final adminDetailsPro =
         Provider.of<AdminDetailsProvider>(context, listen: false);
-    // adminDetailsPro.fetchDrivers();
-    // List<String> drivers = [
-    //   'Rohith',
-    //   'Ajay',
-    //   'Akshay',
-    //   'Sanay',
-    //   'Abhilash',
-    //   'Waleed'
-    // ];
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -71,9 +63,18 @@ class AdminDriverPage extends StatelessWidget {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => DriverDetails(
-                                id: value.driversList[index].id,
-                                name:
-                                    '${value.driversList[index].firstName} ${value.driversList[index].lastName}'),
+                              id: value.driversList[index].id,
+                              firstName: value.driversList[index].firstName,
+                              lastName: value.driversList[index].lastName,
+                              phone: value.driversList[index].phoneNumber,
+                              address: value.driversList[index].address,
+                              profilePicture:
+                                  value.driversList[index].profilePicture,
+                              licensePic: value.driversList[index].licensePic,
+                              rcPic: value.driversList[index].rcPic,
+                              insurancePic:
+                                  value.driversList[index].insurancePic,
+                            ),
                           ),
                         );
                       },
