@@ -59,7 +59,9 @@ class AdminDashboardPage extends StatelessWidget {
                 DashBoardCard(title: 'Total Rides', count: 0),
                 Consumer<AdminDetailsProvider>(builder: (context, value, _) {
                   return DashBoardCard(
-                      title: 'Drivers', count: value.driversCount);
+                      // title: 'Drivers', count: value.driversCount);
+                      title: 'Drivers',
+                      count: value.driversList.length);
                 }),
                 Consumer<AdminDetailsProvider>(builder: (context, value, _) {
                   return DashBoardCard(title: 'Users', count: value.usersCount);

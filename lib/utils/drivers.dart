@@ -8,16 +8,19 @@ class Drivers {
   final String licensePic;
   final String rcPic;
   final String insurancePic;
+  final bool isApproved;
+  final String vehicleType;
 
-  Drivers({
-    required this.firstName,
-    required this.id,
-    required this.lastName,
-    required this.address,
-    required this.phoneNumber,
-    required this.profilePicture,
-    required this.licensePic,
-    required this.rcPic,
-    required this.insurancePic,
-  });
+  Drivers(
+      {required this.firstName,
+      required this.id,
+      required this.lastName,
+      required this.address,
+      required this.phoneNumber,
+      required this.profilePicture,
+      required this.licensePic,
+      required this.rcPic,
+      required this.insurancePic,
+      required this.isApproved,
+      required this.vehicleType,});
 }

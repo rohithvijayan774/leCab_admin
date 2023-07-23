@@ -100,6 +100,23 @@ class AdminDetailsProvider extends ChangeNotifier {
 
   //----------------------Get Collections Datas-----------------------
 
+  Future acceptRequest(String driverId) async {
+    DocumentReference docRef =
+        FirebaseFirestore.instance.collection('drivers').doc(driverId);
+
+    await docRef.update({'isApproved': true});
+
+    log('$driverId Approved');
+    notifyListeners();
+  }
+
+  Future deleteDriver(String driverId) async {
+    DocumentReference docRef =
+        FirebaseFirestore.instance.collection('drivers').doc(driverId);
+    await docRef.delete();
+    notifyListeners();
+  }
+
   Future<int> getDocumentsCount(String collectionName) async {
     CollectionReference collectionRef =
         FirebaseFirestore.instance.collection(collectionName);
@@ -112,12 +129,18 @@ class AdminDetailsProvider extends ChangeNotifier {
   List<Drivers> driversList = [];
   Drivers? driver;
 
-  void fetchDrivers() async {
+  List<Drivers> driversReqList = [];
+  Drivers? driverReq;
+
+  Future fetchDrivers() async {
     print('Fetch Drivers called');
     driversList.clear();
+    driversReqList.clear();
     CollectionReference driversRef =
         FirebaseFirestore.instance.collection('drivers');
-    QuerySnapshot driverSnapshot = await driversRef.get();
+    // QuerySnapshot driverSnapshot = await driversRef.get();
+    QuerySnapshot driverSnapshot =
+        await driversRef.where('isApproved', isEqualTo: true).get();
 
     for (var doc in driverSnapshot.docs) {
       String driverFirstName = doc['driverFirstName'];
@@ -129,6 +152,8 @@ class AdminDetailsProvider extends ChangeNotifier {
       String driverLicensePic = doc['driversLicensePic'];
       String driverRCPic = doc['driversRegCertPic'];
       String driverInsurancePic = doc['driversVehInsurancePic'];
+      bool isApproved = doc['isApproved'];
+      String vehicleType = doc['vehicleType'];
 
       driver = Drivers(
         firstName: driverFirstName,
@@ -140,9 +165,44 @@ class AdminDetailsProvider extends ChangeNotifier {
         licensePic: driverLicensePic,
         rcPic: driverRCPic,
         insurancePic: driverInsurancePic,
+        isApproved: isApproved,
+        vehicleType: vehicleType,
       );
 
       driversList.add(driver!);
+    }
+
+    QuerySnapshot driverReqSnapshot =
+        await driversRef.where('isApproved', isEqualTo: false).get();
+
+    for (var doc in driverReqSnapshot.docs) {
+      String driverFirstName = doc['driverFirstName'];
+      String driverLastName = doc['driverSurName'];
+      String driverId = doc['driverid'];
+      String driverPhoneNumber = doc['driverPhoneNumber'];
+      String driverAddress = doc['driverAddress'];
+      String driverProfilePic = doc['driversProfilePic'];
+      String driverLicensePic = doc['driversLicensePic'];
+      String driverRCPic = doc['driversRegCertPic'];
+      String driverInsurancePic = doc['driversVehInsurancePic'];
+      bool isApproved = doc['isApproved'];
+      String vehicleType = doc['vehicleType'];
+
+      driverReq = Drivers(
+        firstName: driverFirstName,
+        id: driverId,
+        lastName: driverLastName,
+        address: driverAddress,
+        phoneNumber: driverPhoneNumber,
+        profilePicture: driverProfilePic,
+        licensePic: driverLicensePic,
+        rcPic: driverRCPic,
+        insurancePic: driverInsurancePic,
+        isApproved: isApproved,
+        vehicleType: vehicleType,
+      );
+
+      driversReqList.add(driverReq!);
     }
     print('Fetching Completed');
     notifyListeners();
@@ -158,7 +218,7 @@ class AdminDetailsProvider extends ChangeNotifier {
   Users? user;
 
   void fetchUsers() async {
-    print('Fetch Drivers Called');
+    print('Fetch Users Called');
     usersList.clear();
     CollectionReference usersRef =
         FirebaseFirestore.instance.collection('users');

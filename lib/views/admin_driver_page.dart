@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lecab_admin/provider/admin_details_provider.dart';
 import 'package:lecab_admin/views/driver_details.dart';
@@ -12,7 +14,7 @@ class AdminDriverPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final adminDetailsPro =
         Provider.of<AdminDetailsProvider>(context, listen: false);
-
+    log('List: ${adminDetailsPro.driversReqList.length}');
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -74,6 +76,7 @@ class AdminDriverPage extends StatelessWidget {
                               rcPic: value.driversList[index].rcPic,
                               insurancePic:
                                   value.driversList[index].insurancePic,
+                              vehicleType: value.driversList[index].vehicleType,
                             ),
                           ),
                         );

@@ -14,6 +14,7 @@ class DriverDetails extends StatelessWidget {
   final String licensePic;
   final String rcPic;
   final String insurancePic;
+  final String vehicleType;
   const DriverDetails({
     required this.id,
     required this.firstName,
@@ -25,10 +26,13 @@ class DriverDetails extends StatelessWidget {
     required this.licensePic,
     required this.rcPic,
     required this.insurancePic,
+    required this.vehicleType,
   });
 
   @override
   Widget build(BuildContext context) {
+    final adminDetailsProLF =
+        Provider.of<AdminDetailsProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -187,21 +191,29 @@ class DriverDetails extends StatelessWidget {
                   ),
                 ),
               ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all(Colors.grey),
-                  backgroundColor: MaterialStateProperty.all(Colors.black),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  "Remove",
-                  style: TextStyle(
-                    fontFamily: 'SofiaPro',
-                    fontSize: 15,
-                    color: Colors.white,
+              Consumer<AdminDetailsProvider>(builder: (context, value, _) {
+                return ElevatedButton(
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.grey),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
                   ),
-                ),
-              ),
+                  onPressed: () {
+                    value.deleteDriver(id).then((value) {
+                      adminDetailsProLF
+                          .fetchDrivers()
+                          .then((value) => Navigator.pop(context));
+                    });
+                  },
+                  child: const Text(
+                    "Remove",
+                    style: TextStyle(
+                      fontFamily: 'SofiaPro',
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              }),
             ],
           )),
     );
